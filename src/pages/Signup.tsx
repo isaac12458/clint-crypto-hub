@@ -143,6 +143,20 @@ const Signup = () => {
           >
             {isLoading ? 'Creating Account...' : 'Sign Up'}
           </motion.button>
+
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.98 }}
+            onClick={async () => {
+              setIsLoading(true);
+              await signup('demo@clintcrypto.com', 'demo12345');
+              setIsLoading(false);
+              navigate('/dashboard');
+            }}
+            className="w-full py-3 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/10 transition-colors"
+          >
+            Try Demo Account
+          </motion.button>
         </motion.form>
 
         {/* Login Link */}
