@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import cryptoHero from '@/assets/crypto-hero.png';
 
 const Signup = () => {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +19,11 @@ const Signup = () => {
     e.preventDefault();
     setError('');
 
+    if (!fullName.trim()) {
+      setError('Please enter your full name');
+      return;
+    }
+
     if (!email.includes('@')) {
       setError('Please enter a valid email address');
       return;
@@ -29,13 +35,13 @@ const Signup = () => {
     }
 
     setIsLoading(true);
-    const success = await signup(email, password);
+    const success = await signup(email, password, fullName);
     setIsLoading(false);
 
     if (success) {
       navigate('/dashboard');
     } else {
-      setError('Signup failed. Please try again.');
+      setError('Signup failed. Email may already exist.');
     }
   };
 
@@ -98,6 +104,21 @@ const Signup = () => {
           )}
 
           <div className="space-y-2">
+            <label className="text-sm text-muted-foreground">Full Name</label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Enter your full name"
+                className="input-crypto w-full pl-12"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
             <label className="text-sm text-muted-foreground">Email</label>
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
@@ -149,7 +170,7 @@ const Signup = () => {
             whileTap={{ scale: 0.98 }}
             onClick={async () => {
               setIsLoading(true);
-              await signup('demo@clintcrypto.com', 'demo12345');
+              await signup('demo@clintcrypto.com', 'demo12345', 'Demo User');
               setIsLoading(false);
               navigate('/dashboard');
             }}
