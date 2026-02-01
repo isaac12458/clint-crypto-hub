@@ -20,7 +20,7 @@ const networkOptions: NetworkOption[] = [
     name: 'Bitcoin',
     symbol: 'BTC',
     network: 'Bitcoin Network',
-    paymentAddress: 'bc1qpayment4fraud5filter6address7xyz',
+    paymentAddress: 'bc1qaa7t2u3s7kazrrtj599ssets8trj5ztqhadglm',
     icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png',
   },
   {
@@ -28,7 +28,7 @@ const networkOptions: NetworkOption[] = [
     name: 'Ethereum',
     symbol: 'ETH',
     network: 'ERC-20',
-    paymentAddress: '0xPayment4Fraud5Filter6Address7XYZ89AB',
+    paymentAddress: '0xF000BAbD873e71fc61CeF2821c27F60Cb061a977',
     icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png',
   },
   {
@@ -36,8 +36,16 @@ const networkOptions: NetworkOption[] = [
     name: 'USDT',
     symbol: 'USDT',
     network: 'TRC-20 (TRON)',
-    paymentAddress: 'TPayment4Fraud5Filter6Address7XYZ',
+    paymentAddress: 'TX1P3TwFT7tNEsyJZt9A5XBd8LNBNYqUbg',
     icon: 'https://assets.coingecko.com/coins/images/325/small/Tether.png',
+  },
+  {
+    id: 'bnb',
+    name: 'BNB',
+    symbol: 'BNB',
+    network: 'BEP-20 (BSC)',
+    paymentAddress: '0xF000BAbD873e71fc61CeF2821c27F60Cb061a977',
+    icon: 'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png',
   },
 ];
 
