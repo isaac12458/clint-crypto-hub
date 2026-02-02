@@ -11,8 +11,8 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
-  signup: (email: string, password: string, fullName: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  signup: (email: string, password: string, fullName: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateProfile: (fullName: string) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<boolean>;
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const response = await authApi.login(email, password);
       setUser({
@@ -58,14 +58,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         userId: response.user.userId,
       });
       setShowWelcome(true);
-      return true;
+      return { success: true };
     } catch (error) {
       console.error('Login error:', error);
-      return false;
+      const message = error instanceof Error ? error.message : 'Login failed';
+      return { success: false, error: message };
     }
   };
 
-  const signup = async (email: string, password: string, fullName: string): Promise<boolean> => {
+  const signup = async (email: string, password: string, fullName: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const response = await authApi.signup(email, password, fullName);
       setUser({
@@ -74,10 +75,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         userId: response.user.userId,
       });
       setShowWelcome(true);
-      return true;
+      return { success: true };
     } catch (error) {
       console.error('Signup error:', error);
-      return false;
+      const message = error instanceof Error ? error.message : 'Signup failed';
+      return { success: false, error: message };
     }
   };
 
