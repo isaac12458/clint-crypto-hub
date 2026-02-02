@@ -22,45 +22,44 @@ const LoadingScreen = () => (
   </div>
 );
 
-// Protected route wrapper
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+// App content that uses auth context
+const AppContent = () => {
   const { isAuthenticated, isLoading } = useAuth();
-  
+
   if (isLoading) {
     return <LoadingScreen />;
   }
-  
-  if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
-  return <>{children}</>;
-};
 
-// Public route wrapper (redirect to dashboard if authenticated)
-const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-  
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
-  return <>{children}</>;
+  return (
+    <Routes>
+      <Route 
+        path="/" 
+        element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Signup />} 
+      />
+      <Route 
+        path="/login" 
+        element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} 
+      />
+      <Route 
+        path="/dashboard" 
+        element={isAuthenticated ? <Dashboard /> : <Navigate to="/" replace />} 
+      />
+      <Route 
+        path="/deposit" 
+        element={isAuthenticated ? <Deposit /> : <Navigate to="/" replace />} 
+      />
+      <Route 
+        path="/withdraw" 
+        element={isAuthenticated ? <Withdraw /> : <Navigate to="/" replace />} 
+      />
+      <Route 
+        path="/settings" 
+        element={isAuthenticated ? <Settings /> : <Navigate to="/" replace />} 
+      />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
 };
-
-const AppRoutes = () => (
-  <Routes>
-    <Route path="/" element={<PublicRoute><Signup /></PublicRoute>} />
-    <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-    <Route path="/deposit" element={<ProtectedRoute><Deposit /></ProtectedRoute>} />
-    <Route path="/withdraw" element={<ProtectedRoute><Withdraw /></ProtectedRoute>} />
-    <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-    <Route path="*" element={<NotFound />} />
-  </Routes>
-);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -69,7 +68,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AppRoutes />
+          <AppContent />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
