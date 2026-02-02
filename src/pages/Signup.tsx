@@ -35,13 +35,13 @@ const Signup = () => {
     }
 
     setIsLoading(true);
-    const success = await signup(email, password, fullName);
+    const result = await signup(email, password, fullName);
     setIsLoading(false);
 
-    if (success) {
+    if (result.success) {
       navigate('/dashboard');
     } else {
-      setError('Signup failed. Email may already exist.');
+      setError(result.error || 'Signup failed. Please try again.');
     }
   };
 
@@ -170,9 +170,13 @@ const Signup = () => {
             whileTap={{ scale: 0.98 }}
             onClick={async () => {
               setIsLoading(true);
-              await signup('demo@clintcrypto.com', 'demo12345', 'Demo User');
+              const result = await signup('demo@clintcrypto.com', 'demo12345', 'Demo User');
               setIsLoading(false);
-              navigate('/dashboard');
+              if (result.success) {
+                navigate('/dashboard');
+              } else {
+                setError(result.error || 'Demo signup failed');
+              }
             }}
             className="w-full py-3 border border-primary/30 text-primary rounded-xl font-medium hover:bg-primary/10 transition-colors"
           >

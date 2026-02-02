@@ -28,13 +28,13 @@ const Login = () => {
     }
 
     setIsLoading(true);
-    const success = await login(email, password);
+    const result = await login(email, password);
     setIsLoading(false);
 
-    if (success) {
+    if (result.success) {
       navigate('/dashboard');
     } else {
-      setError('Invalid credentials. Please try again.');
+      setError(result.error || 'Login failed. Please try again.');
     }
   };
 
