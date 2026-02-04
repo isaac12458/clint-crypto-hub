@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://clint-crypto-backend-production.up.railway.app';
+const API_BASE_URL = 'https://clint-crypto-hub-backend-1.onrender.com';
 
 interface AuthResponse {
   token: string;
