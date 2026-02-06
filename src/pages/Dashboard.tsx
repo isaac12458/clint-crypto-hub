@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Search, Loader2 } from 'lucide-react';
-import { useCryptoPrices, useAvailableCryptos, CryptoPrice } from '@/hooks/useCryptoPrices';
+import { useCryptoPrices, useAvailableCryptos } from '@/hooks/useCryptoPrices';
 import { useAuth } from '@/contexts/AuthContext';
 import BottomNav from '@/components/BottomNav';
 import CryptoCard from '@/components/CryptoCard';
 import BalanceDisplay from '@/components/BalanceDisplay';
 import WelcomeToast from '@/components/WelcomeToast';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -34,16 +35,37 @@ const Dashboard = () => {
         crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // Get user initials for avatar
+  const getInitials = (name?: string) => {
+    if (!name) return 'U';
+    const parts = name.trim().split(' ');
+    if (parts.length >= 2) {
+      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
+
   return (
     <div className="page-container">
       <WelcomeToast />
 
-      {/* Header */}
+      {/* Header with Avatar */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="mb-2"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-4 flex flex-col items-center gap-3"
       >
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+        >
+          <Avatar className="h-16 w-16 ring-2 ring-primary/30 ring-offset-2 ring-offset-background">
+            <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-primary-foreground text-xl font-bold">
+              {getInitials(user?.fullName)}
+            </AvatarFallback>
+          </Avatar>
+        </motion.div>
         <h1 className="text-2xl font-bold font-display text-gradient-gold text-center">
           {user?.fullName ? `Welcome, ${user.fullName}` : 'Clint Crypto'}
         </h1>
