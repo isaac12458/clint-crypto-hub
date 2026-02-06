@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Search, Loader2 } from 'lucide-react';
 import { useCryptoPrices, useAvailableCryptos, CryptoPrice } from '@/hooks/useCryptoPrices';
+import { useAuth } from '@/contexts/AuthContext';
 import BottomNav from '@/components/BottomNav';
 import CryptoCard from '@/components/CryptoCard';
 import BalanceDisplay from '@/components/BalanceDisplay';
 import WelcomeToast from '@/components/WelcomeToast';
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [trackedCoins, setTrackedCoins] = useState<string[]>([
     'bitcoin', 'ethereum', 'tether', 'the-open-network', 'litecoin'
   ]);
@@ -43,7 +45,7 @@ const Dashboard = () => {
         className="mb-2"
       >
         <h1 className="text-2xl font-bold font-display text-gradient-gold text-center">
-          Clint Crypto
+          {user?.fullName ? `Welcome, ${user.fullName}` : 'Clint Crypto'}
         </h1>
       </motion.div>
 
